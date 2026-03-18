@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="utf-8">
+    <title>Työpaja 3</title>
+    <link rel="stylesheet" href="css/styles.css">
+
+    <script>
+        // --- HARJOITUS 1 ---
+        function showTable() {
+            var nimi = "Tiger Nixon";
+            var tehtava = "System Architect";
+            var palkka = "$320,800";
+
+            
+            var html = `
+                <table border="1">
+                    <tr><th>Nimi</th><th>Tehtävä</th><th>Palkka</th></tr>
+                    <tr><td>${nimi}</td><td>${tehtava}</td><td>${palkka}</td></tr>
+                </table>`;
+            
+            document.getElementById("taulukonPaikka").innerHTML = html;
+        }
+
+        // --- HARJOITUS 2 ---
+        window.onload = function() {
+            
+            var otsikot = document.getElementsByTagName("h2");
+            var h2Harjoitus1 = otsikot[0];
+
+            h2Harjoitus1.onclick = function() {
+                this.style.color = "red";
+                this.innerHTML = "Bye bye mouse!";
+            };
+
+            
+            document.onkeydown = function(event) {
+                document.getElementById("keybox").innerHTML = event.key.toUpperCase();
+                document.getElementById("keyinfo").innerHTML = "Näppäin: " + event.key + " | Koodi: " + event.code;
+                console.log("Painettu: " + event.key);
+            };
+        };
+
+        // --- HARJOITUS 3 ---
+        function focusToggle(isFocused) {
+            var status = document.getElementById("status");
+            var field = document.getElementById("feedback");
+            if (isFocused) {
+                status.innerText = "Kirjoitetaan...";
+                field.style.backgroundColor = "lightyellow";
+            } else {
+                status.innerText = "";
+                field.style.backgroundColor = "";
+            }
+        }
+
+        function validateFeedback() {
+            var field = document.getElementById("feedback");
+            var charCount = document.getElementById("charcount");
+            var preview = document.getElementById("preview");
+            var sendBtn = document.getElementById("sendBtn");
+            
+            var len = field.value.length;
+            charCount.innerText = len + "/200";
+            
+            
+            if (len > 200) {
+                charCount.style.color = "red";
+            } else {
+                charCount.style.color = "black";
+            }
+
+            preview.innerText = field.value;
+
+            
+            if (len >= 10 && len <= 200) {
+                sendBtn.disabled = false;
+            } else {
+                sendBtn.disabled = true;
+            }
+        }
+
+        function submitFeedback(event) {
+            event.preventDefault(); 
+            var field = document.getElementById("feedback");
+            var status = document.getElementById("status");
+
+            if (field.value.length >= 10 && field.value.length <= 200) {
+                status.innerText = "Kiitos palautteesta!";
+                field.value = ""; 
+                validateFeedback(); 
+            } else {
+                status.innerText = "Virhe pituudessa!";
+            }
+        }
+
+        // --- HARJOITUS 4 ---
+        function findMe() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var lat = position.coords.latitude;
+                    var lon = position.coords.longitude;
+                    var url = "https://www.google.com/maps?q=" + lat + "," + lon;
+                    window.open(url, '_blank');
+                });
+            } else {
+                alert("Sijaintia ei tueta.");
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Työpaja 3: JavaScript-tapahtumat</h1>
+    <hr>
+
+    <h2>Harjoitus 1</h2>
+    <p>
+        <button onclick="alert('Klikkasit minua!')">Napsauta minua</button>
+        <button onclick="showTable()">Näytä taulukko</button>
+    </p>
+    <div id="taulukonPaikka">Taulukko tulee tähän...</div>
+
+    <hr>
+
+    <h2 onmouseover="console.log('Stepped over me with a mouse!')">Harjoitus 2</h2>
+    <p>Klikkaa ylempää otsikkoa tai vie hiiri tämän otsikon päälle.</p>
+
+    <hr>
+
+    <h2>Harjoitus 3 ja 4</h2>
+    <form onsubmit="submitFeedback(event)">
+        <p>Palaute (10-200 merkkiä):</p>
+        <textarea id="feedback" 
+                  onfocus="focusToggle(true)" 
+                  onblur="focusToggle(false)" 
+                  oninput="validateFeedback()" 
+                  rows="4" cols="50"></textarea>
+        
+        <p>
+            <span id="charcount">0/200</span>
+            <span id="status"></span>
+        </p>
+
+        <button id="sendBtn" type="submit" disabled>Lähetä</button>
+        <button type="button" onclick="findMe()">Näytä sijaintini</button>
+    </form>
+
+    <h3>Esikatselu:</h3>
+    <div id="preview"></div>
+
+    <hr>
+
+    <h2>Harjoitus 5</h2>
+    <p>Paina jotain näppäintä:</p>
+    <div id="keybox" style="border: 1px solid black; width: 50px; height: 50px; text-align: center; font-size: 30px;">?</div>
+    <p id="keyinfo"></p>
+
+</body>
+</html>
