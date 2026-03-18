@@ -2,219 +2,205 @@
 <html lang="fi">
 
 <head>
-	<title>Työpaja 4</title>
-	<meta charset="utf-8" />
-	<link rel="stylesheet" href="css/styles.css" />
+    <title>Työpaja 4</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <script>
+        // --- TEHTÄVÄ 1 ---
+        function changeHeading() {
+            document.title = "Uusi otsikko!";
+            let t = document.querySelectorAll('h2')[0];
+            t.innerHTML = "Muokattu otsikko!";
+        }
 
-	<script>
-		// --- TEHTÄVÄ 1 ---
-		function changeHeading() {
-			
-			document.querySelector("h2").innerHTML = "Muokattu otsikko!";
-		}
+        function secondButton() {
+            let t = document.querySelectorAll('h2')[1];
+            t.style.fontSize = "40px";
+            t.style.fontFamily = "Arial";
+            t.style.fontStyle = "italic";
+            t.style.color = "white";
+            t.style.backgroundColor = "green";
+        }
 
-		function secondButton() {
-			
-			var h2_2 = document.querySelectorAll("h2")[1];
-			h2_2.style.fontSize = "40px";
-			h2_2.style.fontFamily = "Verdana";
-			h2_2.style.color = "red";
-			h2_2.style.backgroundColor = "yellow";
-		}
+        function kolmasButton() {
+            // lorem ipsum korvaus
+            document.getElementById("lorem").innerHTML = "Tämä on itse valitsemani teksti, joka korvasi vanhan sisällön!";
+        }
 
-		function changeText() {
-			// lorem ipsum teksin korvaus 
-			document.getElementById("lorem").innerHTML = "Tämä on korvaava teksti, joka valittiin tehtävää varten.";
-		}
+        
+        function lisaaTekstia() {
+            document.getElementById("lorem").innerHTML += " Tässä on lisättyä tekstiä perässä.";
+        }
 
-		// --- TEHTÄVÄ 2 ---
-		
-		window.onload = function() {
-			var sisalto = document.querySelector("#sisalto");
+        
+        function muutaTausta() {
+            document.body.style.backgroundColor = "lightblue";
+        }
 
-			// h3
-			var uusiH3 = document.createElement("h3");
-			uusiH3.innerHTML = "Etusivun uutinen";
-			uusiH3.style.color = "blue";
-			uusiH3.style.fontFamily = "Arial";
-			sisalto.appendChild(uusiH3);
+        // --- TEHTÄVÄ 2 ---
+        function valitseAuto() {
+            let malli = document.querySelector('#mySelect').value;
+            let kuva = document.querySelector('#carimage');
+            
+            
+            if (malli === "BMW") {
+                kuva.src = "https://www.bmw.fi/content/dam/bmw/common/all-models/m-series/m8-coupe/2022/navigation/bmw-8series-coupe-modellfinder.png";
+            } else if (malli === "Audi") {
+                kuva.src = "https://via.placeholder.com/400x200?text=Audi+A4";
+            } else if (malli === "Mercedes") {
+                kuva.src = "https://via.placeholder.com/400x200?text=Mercedes+Benz";
+            } else if (malli === "Volvo") {
+                kuva.src = "https://via.placeholder.com/400x200?text=Volvo+V60";
+            }
+        }
 
-			// img
-			var uusiKuva = document.createElement("img");
-			uusiKuva.src = "https://www.w3schools.com/js/pic_bulboff.gif";
-			uusiKuva.style.width = "100px";
-			sisalto.appendChild(uusiKuva);
+        function naytaReunus() {
+            document.getElementById("carimage").style.border = "5px solid red";
+        }
 
-			//  DIV
-			var piilotaNappi = document.createElement("button");
-			piilotaNappi.innerHTML = "Piilota uutinen";
-			piilotaNappi.onclick = function() {
-				sisalto.style.display = "none";
-			};
+        function poistaReunus() {
+            document.getElementById("carimage").style.border = "none";
+        }
 
-			var naytaNappi = document.createElement("button");
-			naytaNappi.innerHTML = "Näytä uutinen";
-			naytaNappi.onclick = function() {
-				sisalto.style.display = "block";
-			};
+        // --- TEHTÄVÄ 3 ---
+        
+        window.onload = function() {
+            document.getElementById("Insert").onclick = function() {
+                let nimi = document.getElementById("nimi").value;
+                let tehtava = document.getElementById("tehtava").value;
+                let palkka = document.getElementById("palkka").value;
 
-			sisalto.after(piilotaNappi, naytaNappi);
+                
+                if (nimi.length <= 5) {
+                    alert("Nimen tulee olla yli 5 merkkiä pitkä!");
+                } else if (tehtava === "") {
+                    alert("Tehtävä-kenttä ei saa olla tyhjä!");
+                } else if (isNaN(palkka) || palkka <= 0 || palkka === "") {
+                    alert("Palkan tulee olla numero ja suurempi kuin 0!");
+                } else {
+                    
+                    let table = document.getElementById("data").getElementsByTagName('tbody')[0];
+                    let row = table.insertRow();
+                    row.insertCell(0).innerHTML = nimi;
+                    row.insertCell(1).innerHTML = tehtava;
+                    row.insertCell(2).innerHTML = "$ " + palkka;
+                }
+            };
+        };
 
-			// --- TEHTÄVÄ 4 ---
-			document.getElementById("Insert").onclick = function() {
-				var nimi = document.getElementById("nimi").value;
-				var tehtava = document.getElementById("tehtava").value;
-				var palkka = document.getElementById("palkka").value;
+        
+        function changePosition() {
+            let img = document.getElementById("carimage");
+            img.style.position = "relative";
+            img.style.left = "-200px";
+            img.style.top = "500px";
+        }
 
-				// Validointi
-				if (nimi.length < 5) {
-					alert("Virhe: Nimen tulee olla vähintään 5 merkkiä pitkä.");
-				} else if (tehtava === "") {
-					alert("Virhe: Tehtävä-kenttä ei saa olla tyhjä.");
-				} else if (palkka <= 0 || isNaN(palkka)) {
-					alert("Virhe: Palkan tulee olla numero ja suurempi kuin 0.");
-				} else {
-					
-					var table = document.getElementById("data").getElementsByTagName('tbody')[0];
-					var newRow = table.insertRow();
-					
-					var cell1 = newRow.insertCell(0);
-					var cell2 = newRow.insertCell(1);
-					var cell3 = newRow.insertCell(2);
+        let pos = 0;
+        function doMove() {
+            let img = document.getElementById("carimage");
+            img.style.position = "relative";
+            pos += 10;
+            img.style.left = pos + "px";
+        }
 
-					cell1.innerHTML = nimi;
-					cell2.innerHTML = tehtava;
-					cell3.innerHTML = "$ " + palkka;
-				}
-			};
-		};
+        let opasiteetti = 1;
+        function fadeOut() {
+            let img = document.getElementById("carimage");
+            if (opasiteetti > 0) {
+                opasiteetti -= 0.1;
+                img.style.opacity = opasiteetti;
+            }
+        }
 
-		// --- TEHTÄVÄ 3 ---
-		function carSelected() {
-			var valinta = document.getElementById("mySelect").value;
-			alert("Valitsit automerkin: " + valinta);
-
-			var kuva = document.getElementById("carimage");
-			
-			if (valinta === "BMW") {
-				kuva.src = "https://www.bmw.fi/content/dam/bmw/common/all-models/m-series/m8-coupe/2022/navigation/bmw-8series-coupe-modellfinder.png";
-			} else if (valinta === "Audi") {
-				kuva.src = "https://www.audi.fi/dam/nemo/models/a4/a4-sedan/mc-2024/1920x1080-mt-a4-sedan.jpg";
-			} else if (valinta === "Mercedes") {
-				kuva.src = "https://www.mercedes-benz.fi/content/finland/fi/passengercars/models/saloon/c-class/overview/_jcr_content/root/responsivegrid/tabs/tabitem/simple_teaser/image.component.dam_ts_1620641725350.jpg";
-			} else if (valinta === "Volvo") {
-				kuva.src = "https://www.volvocars.com/images/v/-/media/project/content-vnext/retailer/fi/finland/images/models/v60-cc.png";
-			}
-		}
-
-		function showBorder() {
-			document.getElementById("carimage").style.border = "5px solid red";
-		}
-
-		function hideBorder() {
-			document.getElementById("carimage").style.border = "none";
-		}
-	</script>
+        function remove() {
+            document.getElementById("carimage").remove();
+        }
+    </script>
 </head>
 
 <body>
-	<hr />
-	<h2>Tehtävä 1: Perus- DOM-muokkaus</h2>
-	<p>
-		&nbsp;Alla näet kolme painiketta. Muokkaa lähdekoodia ja lisää näille
-		painikkeille onClick-tapahtumat. Käytä kehittäjäkonsolia löytääksesi
-	</p>
-	<p>
-		<button onclick="changeHeading();">Painike 1</button>
-		<button onclick="secondButton()">Painike 2</button>
-		<button onclick="changeText()">Painike 3</button>
-	</p>
+    <hr />
+    <h2>Tehtävä 1: Perus- DOM-muokkaus</h2>
+    <p>
+        Alla näet kolme painiketta. Muokkaa lähdekoodia ja lisää näille
+        painikkeille onClick-tapahtumat.
+    </p>
+    <p>
+        <button onclick="changeHeading();">Painike 1</button>
+        <button onclick="secondButton()">Painike 2</button>
+        <button onclick="kolmasButton()">Painike 3</button>
+    </p>
 
-	<ul>
-		<li>
-			Ensimmäisen painikkeen tulisi suorittaa JavaScript-funktio, joka löytää
-			viittauksen sivun &quot;Tehtävä1 -otsikon ja muuttaa sen
-			sisällön muotoon &quot;Muokattu otsikko!&quot;.
-		</li>
-		<li>
-			Toisen painikkeen tulisi suorittaa funktio, joka muuttaa sivun
-			&quot;Tehtävä 2&quot; -otsikon tyyliä. JavaScriptin tulee muuttaa
-			vähintään fonttikokoa, tyyliä, väritystä sekä taustaväriä.
-		</li>
-		<li>
-			Kolmas painike lisää korvaa allaolevan Lorem Ipsum-tekstikappaleen sisällön jollain itse valitsemallasi
-			tekstillä. Säilytä tekstin muotoilu.<br />
-			<br />
-			<em>
-				<strong id="lorem">&quot;Lorem ipsum</strong>
-				hauska teksti olisi tässä tai jotenkin niin jee. &quot;<br><br>
-			</em>
-		</li>
-	</ul>
+    <ul>
+        <li>Ensimmäinen painike muuttaa otsikon.</li>
+        <li>Toinen painike muuttaa Tehtävä 2 -otsikon tyyliä.</li>
+        <li>Kolmas painike korvaa Lorem Ipsum -tekstin.</li>
+        <li>
+            <button onclick="lisaaTekstia()">Bonus: Lisää tekstiä</button>
+        </li>
+        <li>
+            <button onclick="muutaTausta()">Bonus: Taustaväri</button>
+        </li>
+    </ul>
 
-	<div id="sisalto"></div>
-	<hr />
-	<h2>Tehtävä 2: Elementtien luomista dynaamisesti</h2>
-	<ul>
-		<li>Etsi sivulta div-elementti, jonka id="sisalto" käyttäen document.querySelector-funtiota.</li>
-		<li>Luo div-elementin sisälle uusi h3 - tägi jossa lukee "Etusivun uutinen"</li>
-		<li>Tyylittele otsikko JavaScriptilla.</li>
-		<li>Lisää diviin img-tägi ja määrittele sen koko.</li>
-		<li>Lisää napit piilottamista ja näyttämistä varten.</li>
-	</ul>
-	
-	<hr>
-	<h2>Tehtävä 3: Kuvat ja alasvetovalikot</h2>
-	<p>Valitse uusi auto listasta.</p>
-	<select name="mySelect" id="mySelect" onchange="carSelected()">
-		<option value="BMW">BMW</option>
-		<option value="Audi">Audi</option>
-		<option value="Mercedes">Mercedes</option>
-		<option value="Volvo">Volvo</option>
-	</select>
-	<br />
-	<br />
-	<img alt="Auto" onmouseover="showBorder()" onmouseout="hideBorder()" style="left: 0px; opacity: 1"
-		src="https://www.bmw.fi/content/dam/bmw/common/all-models/m-series/m8-coupe/2022/navigation/bmw-8series-coupe-modellfinder.png"
-		width="400" id="carimage" />
+    <p>
+        <strong id="lorem"><em>&quot;Lorem ipsum</em></strong><em>
+            dolor sit amet, consectetuer adipiscing elit. Sed posuere interdum
+            sem. Quisque ligula eros ullamcorper quis, lacinia quis facilisis sed
+            sapien. Mauris varius diam vitae arcu. Sed arcu lectus auctor vitae,
+            consectetuer et venenatis eget velit. &quot;</em>
+    </p>
 
-	<hr />
-	<h2>Tehtävä 4: Taulukot</h2>
-	<p>
-	<h3>Palkkalomake</h3>
-	Nimi
-	<label for="textfield">:</label>
-	<input type="text" name="textfield" id="nimi" />
-	<br />
-	Tehtävä:
-	<input type="text" name="textfield2" id="tehtava" />
-	<br />
-	Palkka:
-	<input type="text" name="textfield3" id="palkka" />
-	<br /><br>
-	<input type="button" name="Insert" id="Insert" value="Lisää" />
-	</p>
-	<table id="data" class="display" border="1">
-		<thead>
-			<tr>
-				<th>Nimi</th>
-				<th>Tehtävä</th>
-				<th>Palkka</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>Tiger Nixon</td>
-				<td>System Architect</td>
-				<td>$320 800</td>
-			</tr>
-			<tr>
-				<td>Garrett Winters</td>
-				<td>Accountant</td>
-				<td>$170 750</td>
-			</tr>
-		</tbody>
-	</table>
+    <hr />
+    <h2>Tehtävä 2: Kuvat ja alasvetovalikot</h2>
+    <p>Valitse uusi auto listasta.</p>
+    <select name="mySelect" id="mySelect" onchange="valitseAuto()">
+        <option value="BMW">BMW</option>
+        <option value="Audi">Audi</option>
+        <option value="Mercedes">Mercedes</option>
+        <option value="Volvo">Volvo</option>
+    </select>
+    <br /><br />
+    <img alt="Auto" onmouseover="naytaReunus()" onmouseout="poistaReunus()" 
+        style="left: 0px; opacity: 1; transition: opacity 0.5s;"
+        src="https://www.bmw.fi/content/dam/bmw/common/all-models/m-series/m8-coupe/2022/navigation/bmw-8series-coupe-modellfinder.png"
+        width="400" id="carimage" />
+
+    <hr />
+    <h2>Tehtävä 3: Taulukot</h2>
+    <div id="lomake">
+        <h3>Palkkalomake</h3>
+        Nimi: <input type="text" id="nimi" /><br />
+        Tehtävä: <input type="text" id="tehtava" /><br />
+        Palkka: <input type="text" id="palkka" /><br /><br />
+        <input type="button" id="Insert" value="Lisää" />
+    </div>
+    <br />
+    <table id="data" border="1">
+        <thead>
+            <tr>
+                <th>Nimi</th>
+                <th>Tehtävä</th>
+                <th>Palkka</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Tiger Nixon</td>
+                <td>System Architect</td>
+                <td>$320 800</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr />
+    <h2>Bonus-tehtävä: Siirrä elementtejä</h2>
+    <ol>
+        <li><button onclick="changePosition()">Siirrä!</button></li>
+        <li><button onclick="setInterval(function(){doMove();},100)">Animoi</button></li>
+        <li><button onclick="setInterval(function(){fadeOut();},250)">Häivytä!</button></li>
+        <li><button onclick="remove()">Häviä!</button></li>
+    </ol>
 </body>
-
 </html>
