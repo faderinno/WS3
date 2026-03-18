@@ -1,0 +1,177 @@
+<!DOCTYPE HTML>
+<html lang="fi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Workshop 5</title>
+</head>
+
+<body>
+    <h1>Workshop 5: Lomakkeet ja Localstorage</h1>
+    <hr />
+
+    <h2>Harjoitus 1 & 3: Yhteystieto-lomake</h2>
+    <form id="contactForm">
+        <div>
+            <label>Name:<br>
+                <input type="text" name="name" id="name"><span id="nameError"></span>
+            </label>
+        </div>
+        <div>
+            <label>Email address:<br>
+                <input type="text" name="email" id="email"><span id="emailError"></span>
+            </label>
+        </div>
+        <div>
+            <label>Comment:<br>
+                <textarea name="comment" id="comment"></textarea><span id="commentError"></span>
+            </label>
+        </div>
+        <input type="submit" value="Send">
+    </form>
+
+    <hr />
+
+    <h2>Harjoitus 2: Jäsenyyslaskuri</h2>
+    <form id="theForm">
+        <fieldset>
+            <legend>Laske jäsenyytesi hinta</legend>
+            <p>Yli 2 vuotta = 20% alennus. 5 vuotta tai yli = lisäksi 5€ alennus.</p>
+            <div>
+                <label for="type">Jäsenyys</label><br>
+                <select name="type" id="type" size="4" required>
+                    <option value="10">Basic - 10.00 &euro;</option>
+                    <option value="15">Premium - 15.00 &euro;</option>
+                    <option value="20">Gold - 20.00 &euro;</option>
+                    <option value="25">Platinum - 25.00 &euro;</option>
+                </select>
+            </div>
+            <div>
+                <label for="years">Vuosia</label>
+                <input type="number" name="years" id="years" min="1" required>
+            </div>
+            <div>
+                <label for="cost">Hinta</label>
+                <input type="text" name="cost" id="cost" disabled>
+            </div>
+            <input type="submit" value="Laske">
+        </fieldset>
+    </form>
+
+    <hr />
+
+    <h2>Harjoitus 4: Datan lataaminen localStoragesta</h2>
+    <button onclick="displayData()">Lataa tiedot localStoragesta</button>
+    <div id="sessiondata">Session data goes here!</div>
+
+    <script>
+        
+        window.onload = function() {
+            displayData();
+        };
+
+        // --- HARJOITUS 1 & 3 ---
+        const contactForm = document.getElementById('contactForm');
+
+        contactForm.onsubmit = function(event) {
+            
+            event.preventDefault();
+
+            const name = document.getElementById('name');
+            const email = document.getElementById('email');
+            const comment = document.getElementById('comment');
+
+            const nameErr = document.getElementById('nameError');
+            const emailErr = document.getElementById('emailError');
+            const commentErr = document.getElementById('commentError');
+
+            let isValid = true;
+
+            
+            nameErr.textContent = "";
+            emailErr.textContent = "";
+            commentErr.textContent = "";
+            name.style.border = "";
+            email.style.border = "";
+            comment.style.border = "";
+
+            
+            if (name.value.trim() === "") {
+                name.style.border = "1px solid red";
+                nameErr.textContent = " Nimi puuttuu";
+                isValid = false;
+            }
+
+            if (email.value.length < 6 || email.value.length >= 15 || !email.value.includes('@')) {
+                email.style.border = "1px solid red";
+                emailErr.textContent = " Sähköposti virheellinen";
+                isValid = false;
+            }
+
+            if (comment.value.trim() === "" || comment.value.length > 150) {
+                comment.style.border = "1px solid red";
+                commentErr.textContent = " Kommentti virheellinen";
+                isValid = false;
+            }
+
+            if (isValid) {
+                
+                alert("Nimi: " + name.value + "\nEmail: " + email.value);
+
+                
+                localStorage.setItem('user_name', name.value);
+                localStorage.setItem('user_email', email.value);
+                localStorage.setItem('user_comment', comment.value);
+
+                displayData();
+            }
+        };
+
+        // --- HARJOITUS 2 ---
+        const memberForm = document.getElementById('theForm');
+
+        memberForm.onsubmit = function(event) {
+            event.preventDefault();
+
+            const price = parseFloat(document.getElementById('type').value);
+            const years = parseInt(document.getElementById('years').value);
+            const costField = document.getElementById('cost');
+
+            // Perushinta
+            let total = price * 12 * years;
+
+          
+            if (years > 2) {
+                total = total * 0.8;
+                alert("20% alennus huomioitu.");
+            }
+
+            
+            if (years >= 5) {
+                total = total - 5;
+                alert("5€ lisäalennus huomioitu.");
+            }
+
+            costField.value = total.toFixed(2) + " €";
+        };
+
+        // --- HARJOITUS 4 ---
+        function displayData() {
+            const output = document.getElementById('sessiondata');
+            
+            const n = localStorage.getItem('user_name');
+            const e = localStorage.getItem('user_email');
+            const c = localStorage.getItem('user_comment');
+
+            if (n || e || c) {
+                output.innerHTML = "Nimi: " + (n || "-") + "<br>" +
+                                 "Email: " + (e || "-") + "<br>" +
+                                 "Kommentti: " + (c || "-");
+            } else {
+                output.innerHTML = "Ei tallennettua tietoa.";
+            }
+        }
+    </script>
+</body>
+
+</html>
